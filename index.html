@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>ContentFetch</title>
+</head>
+<body>
+    <div class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
+        <form id="myForm">
+            <h1>Введіть посилання:</h1> 
+            <br>
+            <input type="text" id="link" name="link">
+            <br>
+            <br>
+            <input type="button" value="Перевірити" onclick="checkLink()">
+        </form>
+    </div>
+    <script>
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        function checkLink() {
+            var link = document.getElementById('link').value;
+            $.getJSON('https://raw.githubusercontent.com/SberKonPlay/ContentFetch/main/content_links.json', function(data) {
+                var content = data.content;
+                for (var i = 0; i < content.length; i++) {
+                    if (content[i].tiktok == link || content[i].reddit == link || content[i].youtube == link || content[i].twitter == link || content[i].facebook == link || content[i].instagram == link) {
+                        window.location.href = content[i].download_url;
+                        return;
+                    }
+                }
+                window.location.href = 'error.html';
+            });
+        }
+
+        window.onload = function() {
+            var link = getParameterByName('link');
+            if (link) {
+                document.getElementById('link').value = link;
+                checkLink();
+            }
+        }
+    </script>
+</body>
+</html>
