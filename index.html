@@ -30,7 +30,7 @@
 
         function checkLink() {
             var link = document.getElementById('link').value;
-            $.getJSON('https://raw.githubusercontent.com/SberKonPlay/ContentFetch/main/content_links.json', function(data) {
+            $.getJSON('https://raw.githubusercontent.com/SberKonPlay/SberKonPlay.GitHub.io/main/content_links.json', function(data) {
                 var content = data.content;
                 for (var i = 0; i < content.length; i++) {
                     if (content[i].tiktok == link || content[i].reddit == link || content[i].youtube == link || content[i].twitter == link || content[i].facebook == link || content[i].instagram == link) {
