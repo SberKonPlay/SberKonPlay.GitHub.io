@@ -35,27 +35,13 @@
             var cleanedUrl = url;
             var tempElement = document.createElement('a');
             tempElement.href = url;
-            
-            switch (tempElement.hostname) {
-                case 'vm.tiktok.com':
-                    cleanedUrl = url.replace(/(https:\/\/vm.tiktok.com\/[^?]*).*/, '$1');
-                    break;
-                case 'www.tiktok.com':
-                    cleanedUrl = url.replace(/(https:\/\/www.tiktok.com\/[^?]*).*/, '$1');
-                    break;
-                case 'www.reddit.com':
-                    cleanedUrl = url.replace(/(https:\/\/www.reddit.com\/[^?]*).*/, '$1');
-                    break;
-                case 'x.com':
-                case 'twitter.com':
-                    cleanedUrl = url.replace(/(https:\/\/(?:x|twitter).com\/[^?]*).*/, '$1');
-                    break;
-                case 'youtube.com':
-                case 'www.youtube.com':
-                    cleanedUrl = url.replace(/(https:\/\/(?:www\.)?youtube.com\/[^?]*).*/, '$1');
-                    break;
-                // Додати інші хости при необхідності
-            }
+
+            // Видалення "www" та додаткових параметрів
+            var hostname = tempElement.hostname.replace(/^www\./, '');
+            var pathname = tempElement.pathname.replace(/\/$/, '');
+
+            cleanedUrl = 'https://' + hostname + pathname;
+
             return cleanedUrl;
         }
 
