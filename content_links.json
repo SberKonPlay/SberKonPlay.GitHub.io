@@ -1,18 +1,34 @@
 {
-    "content": [
+  "authors": [
+    {
+      "name": "Ім'я автора",
+      "photo": "https://example.com/photo.jpg",
+      "socials": {
+        "tiktok": ["https://www.tiktok.com/@author", "authorName"],
+        "youtube": ["https://www.youtube.com/user/author", "authorName"],
+        "twitter": ["https://twitter.com/author", "authorName"],
+        "reddit": ["https://www.reddit.com/user/author", "authorName"]
+      },
+      "content": [
         {
-            "tiktok": "https://www.tiktok.com/@sberkonplay/video/7358265646154550534",
-            "youtube": "https://www.youtube.com/shorts/TWcMIKRQsds",
-            "twitter": "https://x.com/sberkonplay/status/1795913230281294321",
-            "reddit": "https://www.reddit.com/r/Brawlstars/comments/1c53n5q/gamemode_mastery_concept",
-            "download_url": "https://drive.usercontent.google.com/download?id=1zMimo9pnUqFfpGQqwadE5XzNTY2m5FDS&export=download&authuser=0"
+          "tiktok": "https://www.tiktok.com/@sberkonplay/video/7358265646154550534",
+          "youtube": "https://www.youtube.com/shorts/TWcMIKRQsds",
+          "twitter": "https://x.com/sberkonplay/status/1795913230281294321",
+          "reddit": "https://www.reddit.com/r/Brawlstars/comments/1c53n5q/gamemode_mastery_concept",
+          "file_name": "MasteryMode",
+          "file_size": "50 mb",
+          "download_url": "https://drive.usercontent.google.com/download?id=1zMimo9pnUqFfpGQqwadE5XzNTY2m5FDS&export=download&authuser=0"
         },
         {
-            "tiktok": "https://youtube.com/yourvideo2",
-            "youtube": "https://instagram.com/yourcontent2",
-            "twitter": "https://twitter.com/yourtweet2",
-            "reddit": "https://facebook.com/yourpost2",
-            "download_url": "https://drive.google.com/file/d/2bCdEfGhI/view"
+          "tiktok": "https://www.tiktok.com/@author/video/0987654321",
+          "youtube": "https://www.youtube.com/watch?v=klmnopqrst",
+          "twitter": "https://twitter.com/author/status/0987654321",
+          "reddit": "https://www.reddit.com/r/subreddit/comments/klmnopqrst",
+          "file_name": "назва файлу 2",
+          "file_size": "розмір файлу 2",
+          "download_url": "https://example.com/download2"
         }
-    ]
+      ]
+    }
+  ]
 }
