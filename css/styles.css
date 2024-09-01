@@ -279,17 +279,7 @@
     transition: transform 0.3s ease; /* Плавний перехід для зміни масштабу */
 }
 
-@media (min-width: 700px) and (max-width: 1280px) {
-    .link-checker {
-        transform: scale(calc(1.0 + (0.25 * ((100vw - 700px) / (1280 - 500)))));
-    }
-}
 
-@media (min-width: 1280px) {
-    .link-checker {
-        transform: scale(1.25); /* Максимальне значення масштабу */
-    }
-}
 
 .check-link-button {
     display: flex;
@@ -314,90 +304,4 @@
     }
   }
 
-  /* Скидання стандартних стилів браузера */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html, body {
-    width: 100%;
-    height: 100%;
-    font-family: Arial, sans-serif;
-}
-
-/* Основний контейнер, що займає всю висоту сторінки */
-.full-page {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    width: 100%;
-    background-color: #f0f0f0; /* Змінити на бажаний колір */
-    padding: 20px; /* Додатковий простір по краях */
-}
-
-/* Контейнер для рядка введення та кнопки */
-.input-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    max-width: 500px; /* Максимальна ширина для вмісту */
-    margin-bottom: 20px; /* Відступ знизу */
-}
-
-/* Стилі для рядка введення */
-.input-row input[type="text"] {
-    flex: 1;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px 0 0 4px;
-    outline: none;
-}
-
-/* Стилі для кнопки */
-.input-row button {
-    padding: 10px 20px;
-    font-size: 16px;
-    color: #fff;
-    background-color: #007bff;
-    border: 1px solid #007bff;
-    border-radius: 0 4px 4px 0;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.input-row button:hover {
-    background-color: #0056b3;
-}
-
-/* Адаптивність для мобільних пристроїв */
-@media (max-width: 768px) {
-    .input-row {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .input-row input[type="text"], .input-row button {
-        width: 100%;
-        border-radius: 4px;
-        margin-bottom: 10px;
-    }
-
-    .input-row button {
-        border-radius: 4px;
-        margin-bottom: 0;
-    }
-}
-
-/* Стилі для повідомлень про помилки */
-.error-message {
-    color: red;
-    font-size: 14px;
-    margin-top: 10px;
-    display: none; /* Спочатку приховано */
-}
+  
