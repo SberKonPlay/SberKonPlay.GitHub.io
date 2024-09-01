@@ -197,6 +197,27 @@
             }
         }
 
+        $(document).ready(function(){
+    // Ініціалізація всіх поповерів
+    $('[data-bs-toggle="popover"]').popover();
+
+    // Автоматичне закриття спеціального поповера через 1.5 секунди
+    $('#special-popover').on('shown.bs.popover', function () {
+        var $this = $(this);
+        setTimeout(function () {
+            $this.popover('hide');
+        }, 1500); // 1.5 секунди
+    });
+
+    // Закриття поповерів при натисканні поза ними
+    $(document).on('click', function (e) {
+        $('[data-bs-toggle="popover"]').each(function () {
+            if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                $(this).popover('hide');
+            }
+        });
+    });
+});
 
 
 </script>
