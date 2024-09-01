@@ -164,7 +164,7 @@
 
 @media (min-width: 400px) {
     .full-logo {
-        height: calc(80px + (120 * ((100vw - 400px) / (1280 - 400))));
+        height: calc(100px + (120 * ((100vw - 400px) / (1280 - 400))));
         margin-top: calc(16px + (6 * ((100vw - 400px) / (1280 - 400))));
     }
 }
@@ -254,8 +254,8 @@
 }
 
 
-.link-checker {
-    margin-top: 34px;
+.link-checker-margin {
+    margin-bottom: 25px;
 }
 
 .logs {
@@ -279,6 +279,17 @@
     transition: transform 0.3s ease; /* Плавний перехід для зміни масштабу */
 }
 
+@media (min-width: 700px) and (max-width: 1280px) {
+    .link-checker {
+        transform: scale(calc(1.0 + (0.25 * ((100vw - 700px) / (1280 - 500)))));
+    }
+}
+
+@media (min-width: 1280px) {
+    .link-checker {
+        transform: scale(1.25); /* Максимальне значення масштабу */
+    }
+}
 
 .check-link-button {
     display: flex;
@@ -302,5 +313,4 @@
       transform: none;
     }
   }
-
   
