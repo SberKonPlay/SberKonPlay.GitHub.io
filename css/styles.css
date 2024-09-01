@@ -1,0 +1,302 @@
+
+
+.background {
+    background: linear-gradient(
+      178.74deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 1) 150%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(58, 225, 113, 1) 0%,
+      rgba(72, 215, 173, 1) 100%
+    );
+    
+    height: 100vh;
+    background-size: cover;
+    background-attachment: scroll;
+}
+
+.navbar-text {
+    color: #000000;
+    font-family: "Open Sans";
+    font-weight: 650;
+    font-style: normal;
+    text-decoration: none;
+    font-size: calc(14px + (1 * ((100vw - 500px) / (1280 - 500))));
+    /* Плавний перехід для зміни розміру шрифту */
+    transition: font-size 0.3s ease;
+}
+
+/* Опційно: визначення конкретних медіа-запитів для обмеження змін */
+@media (max-width: 500px) {
+    .navbar-text {
+        font-size: 14px; /* Мінімальний розмір шрифту */
+    }
+}
+
+@media (min-width: 1280px) {
+    .navbar-text {
+        font-size: 15px; /* Максимальний розмір шрифту */
+    }
+}
+
+.error-message {
+    color: rgb(255, 64, 17);
+    font-size: 13px;
+    font-family: "Open Sans";
+    font-weight: 750;
+    font-style: normal;
+    text-align: center;
+}
+
+.warning-message {
+    color: rgb(255, 211, 17);
+    font-size: 13px;
+    font-family: "Open Sans";
+    font-weight: 750;
+    font-style: normal;
+    text-align: center;
+}
+
+.navbar-active {
+    color: #d1d1d1; 
+    border-style: solid;
+    border-color: #3fdd88;
+    border-width: 0px 0px 4px 0px;
+}
+
+.navbar-active-text {
+    color: #d1d1d1; 
+}
+
+.navbar-text:hover { 
+    color: #d1d1d1; 
+}
+
+.navbar {
+    background: #ffffff;
+    box-shadow: 0px 4px 10.8px 0px rgba(0, 0, 0, 0.15);
+    height: 70px;
+}
+
+.logo * {
+    box-sizing: border-box;
+}
+
+:root {
+    --margin-left-value: 100px; /* Значення за замовчуванням */
+}
+
+.logo-box {
+    margin-left: var(--margin-left-value);
+}
+
+@media (max-width: 1280px) {
+    :root {
+        --margin-left-value: calc(0px + (80 * (100vw - 500px) / 780));
+    }
+}
+
+@media (max-width: 500px) {
+    :root {
+        --margin-left-value: 0px;
+    }
+}
+
+.logo {
+    width: 30px;
+    height: 34px;
+    transition: all 0.3s ease-in-out; 
+}
+
+.logo:hover {
+    width: 34px;
+    height: 38px;
+    transition: all 0.3s ease-in-out;
+}
+
+.nav-item {
+    width: 75px; /* Фіксована ширина для кожного блоку */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-item-home{
+    width: 80px;
+}
+
+.nav-item-members{
+    width: 115px;
+}
+
+.popover {
+    color: #000000;
+    font-size: 14px;
+    font-family: "Open Sans";
+    font-weight: 650;
+    font-style: normal;
+    text-decoration: none;
+    box-shadow: 0px 4px 13.7px 0px rgba(0, 0, 0, 0.15);
+    border: none; /* Відсутність обводки */
+}
+
+
+.full-logo {
+    height: 143px;
+    margin-top: 24px;
+    transition: height 0.3s ease, margin-top 0.3s ease;
+}
+
+@media (min-width: 700px) {
+    .full-logo {
+        height: calc(143px + (57 * ((100vw - 700px) / (1280 - 700))));
+        margin-top: calc(24px + (6 * ((100vw - 700px) / (1280 - 700))));
+    }
+}
+
+.link-input-box,
+.link-input-box * {
+  box-sizing: border-box;
+}
+.link-input-box {
+  height: 51px;
+  position: relative;
+}
+
+.input-section {
+  color: #000000;
+  text-align: left;
+  font-family: "OpenSans-SemiBold", sans-serif;
+  font-size: 16px;
+  letter-spacing: -0.04em;
+  font-weight: 535;
+}
+.paste-button {
+  width: 48px;
+  height: 51px;
+  position: absolute;
+  left: 300px;
+  top: 0px;
+  overflow: visible;
+}
+
+.paste-button-icon {
+    position: absolute;
+    left: 10px;
+    top: 13px;
+    overflow: visible;
+    transition: transform 0.3s ease-in-out,
+  }
+
+.paste-button-icon:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease-in-out,
+}
+
+.paste-button-icon:active {
+    transform: scale(0.9);
+    transition: transform 0.3s ease-in-out,
+}
+
+.custom-input {
+    width: 300px;
+    font-family: "Open sans", sans-serif ;
+    border-radius: 32px 0px 0px 32px;
+    height: 50px;
+    background: white;
+    box-shadow: 0px 4px 13.7px rgba(0, 0, 0, 0.15);
+    border: none;
+    padding: 0 15px; 
+    font-size: 16px; 
+    outline: none; 
+}
+
+.check-link-button {
+    margin-top: 34px;
+    width: 280px;
+    height: 51px;
+    background: linear-gradient(to left, #ffffff, #ffffff);
+    border-radius: 32px;
+    box-shadow: 0px 4px 13.7px 0px rgba(0, 0, 0, 0.15);
+    border: none; /* Видаляємо стандартну рамку */
+    color: #3fdd88;
+    font-family: "OpenSans-Bold", sans-serif;
+    font-size: 24px;
+    letter-spacing: -0.04em;
+    font-weight: 700;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; /* Додаємо плавний перехід */
+}
+
+.check-link-button:hover {
+    transform: scale(1.1);
+     /* Збільшення кнопки при наведенні */
+}
+
+.check-link-button:active {
+    transform: scale(0.9); /* Зменшення кнопки при натисканні */
+    opacity: 0.5; /* Прозорість кнопки на 50% */
+    transition: opacity 0.3s ease-in-out;
+}
+
+
+.link-checker {
+    margin-top: 34px;
+}
+
+.logs {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 14px;
+    width: 100%; /* Безкінечна ширина */
+    height: 350px;
+    position: relative;
+    box-shadow: 0px 4px 13.7px 0px rgba(0, 0, 0, 0.15);
+    padding: 20px; /* Зменшення за допомогою padding */
+    max-width: 511px; /* Максимальна ширина */
+    margin: 0 auto; /* Відцентрування */
+}
+
+.logs-margin {
+    margin-top: 52px;
+}
+
+.link-checker {
+    transform: scale(1.0);
+    transition: transform 0.3s ease; /* Плавний перехід для зміни масштабу */
+}
+
+@media (min-width: 700px) and (max-width: 1280px) {
+    .link-checker {
+        transform: scale(calc(1.0 + (0.25 * ((100vw - 700px) / (1280 - 500)))));
+    }
+}
+
+@media (min-width: 1280px) {
+    .link-checker {
+        transform: scale(1.25); /* Максимальне значення масштабу */
+    }
+}
+
+.check-link-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.spinner-border {
+    display: flex;
+    flex-wrap: nowrap;
+    border-color: #3fdd88;
+}
+
+@keyframes spinner-border {
+    0% {
+      transform: scale(0);
+    }
+    50% {
+      opacity: 1;
+      transform: none;
+    }
+  }
