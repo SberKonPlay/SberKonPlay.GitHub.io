@@ -356,7 +356,7 @@
 
 @media (min-width: 400px) {
     .shorcut-icon {
-        margin-top: calc(80px + (80 * ((1280px - 100vw) / (1280 - 400))));
+        margin-top: calc(60px + (80 * ((1280px - 100vw) / (1280 - 400))));
     }
 }
 
