@@ -40,20 +40,18 @@
     font-style: normal;
     text-decoration: none;
     font-size: calc(14px + (1 * ((100vw - 500px) / (1280 - 500))));
-    /* Плавний перехід для зміни розміру шрифту */
     transition: font-size 0.3s ease;
 }
 
-/* Опційно: визначення конкретних медіа-запитів для обмеження змін */
 @media (max-width: 500px) {
     .navbar-text {
-        font-size: 14px; /* Мінімальний розмір шрифту */
+        font-size: 14px;
     }
 }
 
 @media (min-width: 1280px) {
     .navbar-text {
-        font-size: 15px; /* Максимальний розмір шрифту */
+        font-size: 15px;
     }
 }
 
@@ -107,7 +105,7 @@
 }
 
 :root {
-    --margin-left-value: 100px; /* Значення за замовчуванням */
+    --margin-left-value: 100px;
 }
 
 .logo-box {
@@ -146,7 +144,7 @@
 }
 
 .nav-item {
-    width: 75px; /* Фіксована ширина для кожного блоку */
+    width: 75px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -256,17 +254,16 @@
     font-size: 24px;
     letter-spacing: -0.04em;
     font-weight: 700;
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; /* Додаємо плавний перехід */
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; 
 }
 
 .check-link-button:hover {
     transform: scale(1.1);
-     /* Збільшення кнопки при наведенні */
 }
 
 .check-link-button:active {
-    transform: scale(0.9); /* Зменшення кнопки при натисканні */
-    opacity: 0.5; /* Прозорість кнопки на 50% */
+    transform: scale(0.9); 
+    opacity: 0.5; 
     transition: opacity 0.3s ease-in-out;
 }
 
@@ -278,13 +275,13 @@
 .logs {
     background: rgba(0, 0, 0, 0.25);
     border-radius: 14px;
-    width: 100%; /* Безкінечна ширина */
+    width: 100%; 
     height: 350px;
     position: relative;
     box-shadow: 0px 4px 13.7px 0px rgba(0, 0, 0, 0.15);
-    padding: 20px; /* Зменшення за допомогою padding */
-    max-width: 511px; /* Максимальна ширина */
-    margin: 0 auto; /* Відцентрування */
+    padding: 20px; 
+    max-width: 511px; 
+    margin: 0 auto; 
 }
 
 .logs-margin {
@@ -293,7 +290,7 @@
 
 .link-checker {
     transform: scale(1.0);
-    transition: transform 0.3s ease; /* Плавний перехід для зміни масштабу */
+    transition: transform 0.3s ease; 
 }
 
 @media (min-width: 700px) and (max-width: 1280px) {
@@ -304,7 +301,7 @@
 
 @media (min-width: 1280px) {
     .link-checker {
-        transform: scale(1.25); /* Максимальне значення масштабу */
+        transform: scale(1.25); 
     }
 }
 
@@ -380,7 +377,7 @@
     background: linear-gradient( 90deg, rgba(58, 225, 113, 1) 0%, rgba(72, 215, 173, 1) 100%);
     border-radius: 32px;
     box-shadow: 0px 4px 13.7px 0px rgba(0, 0, 0, 0.15);
-    border: none; /* Видаляємо стандартну рамку */
+    border: none; 
     color: #ffffff;
     font-family: "OpenSans-Bold", sans-serif;
     font-size: 24px;
@@ -390,17 +387,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;/* Додаємо плавний перехід */
+    position: relative;
 }
 
 .download-button:hover {
     transform: scale(1.1);
-     /* Збільшення кнопки при наведенні */
 }
 
 .download-button:active {
-    transform: scale(0.9); /* Зменшення кнопки при натисканні */
-    opacity: 0.5; /* Прозорість кнопки на 50% */
+    transform: scale(0.9); 
+    opacity: 0.5; 
     transition: opacity 0.3s ease-in-out;
 }
 
@@ -411,7 +407,6 @@
     font-style: normal;
     text-decoration: none;
     font-size: calc(14px + (1 * ((100vw - 500px) / (1280 - 500))));
-    /* Плавний перехід для зміни розміру шрифту */
     transition: font-size 0.3s ease;
 }
 
