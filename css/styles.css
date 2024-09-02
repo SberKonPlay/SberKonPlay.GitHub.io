@@ -344,13 +344,19 @@
 }
 
 .shorcut-icon {
-    height: 200px;
+    height: 250px;
+    margin-top:150px;
 }
 
 @media (min-width: 400px) {
     .shorcut-icon {
-        height: calc(280px + (200 * ((100vw - 400px) / (1280 - 400))));
-        margin-top: calc(160px + (-125 * ((100vw - 400px) / (1280 - 400))));
+        height: calc(270px + (200 * ((100vw - 400px) / (1280 - 400))));
+    }
+}
+
+@media (min-width: 400px) {
+    .shorcut-icon {
+        margin-top: calc(80px + (80 * ((1280px - 100vw) / (1280 - 400))));
     }
 }
 
