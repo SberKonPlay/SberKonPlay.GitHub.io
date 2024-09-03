@@ -1,39 +1,28 @@
-addEventListener('fetch', event => {
-    event.respondWith(handleRequest(event.request))
-})
+const https = require('https');
 
-async function handleRequest(request) {
-    const url = new URL(request.url)
-    const redditUrl = url.searchParams.get('url')
+export default function handler(req, res) {
+    const { url } = req.query; // Get the URL parameter from the query string
 
-    if (!redditUrl) {
-        return new Response(JSON.stringify({ error: "URL is required" }), {
-            status: 400,
-            headers: { 'Content-Type': 'application/json' }
-        })
+    if (!url) {
+        // If no URL is provided, respond with a 400 error
+        res.status(400).json({ error: "URL is required" });
+        return;
     }
 
-    try {
-        const response = await fetch(redditUrl, {
-            redirect: 'manual' // Do not follow redirects automatically
-        })
-        const location = response.headers.get('location')
+    // Make a request to the given URL
+    https.get(url, (response) => {
+        // Getting the final URL after redirection
+        const location = response.headers.location;
 
         if (location) {
-            return new Response(JSON.stringify({ unshortened_url: location }), {
-                status: 200,
-                headers: { 'Content-Type': 'application/json' }
-            })
+            // If there is a redirection, return the unshortened URL
+            res.status(200).json({ unshortened_url: location });
         } else {
-            return new Response(JSON.stringify({ error: "Unable to unshorten URL" }), {
-                status: 400,
-                headers: { 'Content-Type': 'application/json' }
-            })
+            // If no redirection is found, return an error
+            res.status(400).json({ error: "Unable to unshorten URL" });
         }
-    } catch (error) {
-        return new Response(JSON.stringify({ error: error.message }), {
-            status: 500,
-            headers: { 'Content-Type': 'application/json' }
-        })
-    }
+    }).on('error', (err) => {
+        // Handle any errors during the request
+        res.status(500).json({ error: err.message });
+    });
 }
