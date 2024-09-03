@@ -1,0 +1,10 @@
+{
+  "name": "url-unshortener",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "vercel dev"
+  },
+  "dependencies": {
+    "node-fetch": "^3.0.0"
+  }
+}
