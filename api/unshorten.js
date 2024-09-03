@@ -9,17 +9,21 @@ export default function handler(req, res) {
         return;
     }
 
-    // Make a request to the given URL
+    // Perform a GET request to the provided URL
     https.get(url, (response) => {
-        // Getting the final URL after redirection
+        // Check for redirection
+        const statusCode = response.statusCode;
         const location = response.headers.location;
 
-        if (location) {
-            // If there is a redirection, return the unshortened URL
+        if (statusCode >= 300 && statusCode < 400 && location) {
+            // If status code indicates a redirect and a location is present, return it
             res.status(200).json({ unshortened_url: location });
+        } else if (statusCode >= 200 && statusCode < 300) {
+            // If the URL is not a redirect, return the original URL (not shortened or already unshortened)
+            res.status(200).json({ unshortened_url: url });
         } else {
-            // If no redirection is found, return an error
-            res.status(400).json({ error: "Unable to unshorten URL" });
+            // If no redirection is found, return an error message
+            res.status(400).json({ error: "Unable to unshorten URL, no redirection found." });
         }
     }).on('error', (err) => {
         // Handle any errors during the request
