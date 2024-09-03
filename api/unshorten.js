@@ -1,32 +1,39 @@
-export default async function handler(req, res) {
-  const { url } = req.query;
+addEventListener('fetch', event => {
+    event.respondWith(handleRequest(event.request))
+})
 
-  if (!url) {
-    return res.status(400).json({ error: 'URL parameter is missing' });
-  }
+async function handleRequest(request) {
+    const url = new URL(request.url)
+    const redditUrl = url.searchParams.get('url')
 
-  try {
-    const response = await fetch(url, {
-    method: 'GET',
-    redirect: 'follow',
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36',
-      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-      'Accept-Language': 'en-US,en;q=0.5',
-      'Accept-Encoding': 'gzip, deflate, br',
-      'Connection': 'keep-alive',
-      'Upgrade-Insecure-Requests': '1'
-    }
-  });
-
-
-    if (!response || !response.url) {
-      throw new Error('No response from fetch');
+    if (!redditUrl) {
+        return new Response(JSON.stringify({ error: "URL is required" }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' }
+        })
     }
 
-    return res.status(200).json({ expandedUrl: response.url });
-  } catch (error) {
-    console.error('Error occurred:', error);
-    return res.status(500).json({ error: 'Error unshortening URL' });
-  }
+    try {
+        const response = await fetch(redditUrl, {
+            redirect: 'manual' // Do not follow redirects automatically
+        })
+        const location = response.headers.get('location')
+
+        if (location) {
+            return new Response(JSON.stringify({ unshortened_url: location }), {
+                status: 200,
+                headers: { 'Content-Type': 'application/json' }
+            })
+        } else {
+            return new Response(JSON.stringify({ error: "Unable to unshorten URL" }), {
+                status: 400,
+                headers: { 'Content-Type': 'application/json' }
+            })
+        }
+    } catch (error) {
+        return new Response(JSON.stringify({ error: error.message }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+        })
+    }
 }
