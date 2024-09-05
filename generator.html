@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор скрипта</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .collapsed-content {
+            display: none;
+        }
+        .script-entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .visually-hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Генератор скрипта</h2>
+        <div id="script-generator">
+            <!-- Динамічний список скриптів -->
+        </div>
+
+        <!-- Кнопка для додавання нової колонки -->
+        <button class="btn btn-primary add-btn mt-3">Додати ще одну колонку</button>
+
+        <!-- Вікно з результатом -->
+        <div class="mt-4">
+            <h4>Результат</h4>
+            <textarea class="form-control" id="result" rows="5" readonly></textarea>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const scriptGenerator = document.getElementById('script-generator');
+            const result = document.getElementById('result');
+            const addBtn = document.querySelector('.add-btn');
+            let currentEntries = [];
+
+            function updateResult() {
+                let resultObject = currentEntries.reduce((acc, entry) => {
+                    acc.push({
+                        tiktok: entry.tiktok,
+                        youtube: entry.youtube,
+                        twitter: entry.twitter,
+                        reddit: entry.reddit,
+                        download_url: entry.downloadUrl
+                    });
+                    return acc;
+                }, []);
+                result.value = JSON.stringify(resultObject, null, 4);
+            }
+
+            function collapseAllEntries() {
+                const allEntries = document.querySelectorAll('.script-entry .collapsed-content');
+                allEntries.forEach(entry => {
+                    entry.style.display = 'none';
+                });
+            }
+
+            function addNewEntry(data = {}) {
+                const newEntry = {
+                    tiktok: data.tiktok || '',
+                    youtube: data.youtube || '',
+                    twitter: data.twitter || '',
+                    reddit: data.reddit || '',
+                    fileName: data.fileName || '',
+                    fileSize: data.fileSize || '',
+                    downloadUrl: data.downloadUrl || ''
+                };
+
+                const newEntryId = `entry-${currentEntries.length}`;
+                currentEntries.push(newEntry);
+
+                const entryElement = document.createElement('div');
+                entryElement.classList.add('mb-3', 'script-entry');
+                entryElement.innerHTML = `
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="script-entry-header visually-hidden">
+                                <span class="file-name">${newEntry.fileName || 'Назва файла'}</span>
+                                <span class="file-size">${newEntry.fileSize || 'Розмір файла'}</span>
+                                <div>
+                                    <button class="btn btn-secondary edit-btn">Редагувати</button>
+                                    <button class="btn btn-danger delete-btn">Видалити</button>
+                                </div>
+                            </div>
+                            <div class="collapsed-content">
+                                <div class="mb-3">
+                                    <label for="tiktok-${newEntryId}" class="form-label">TikTok</label>
+                                    <input type="text" class="form-control" id="tiktok-${newEntryId}" value="${newEntry.tiktok}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="youtube-${newEntryId}" class="form-label">YouTube</label>
+                                    <input type="text" class="form-control" id="youtube-${newEntryId}" value="${newEntry.youtube}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="twitter-${newEntryId}" class="form-label">Twitter</label>
+                                    <input type="text" class="form-control" id="twitter-${newEntryId}" value="${newEntry.twitter}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="reddit-${newEntryId}" class="form-label">Reddit</label>
+                                    <input type="text" class="form-control" id="reddit-${newEntryId}" value="${newEntry.reddit}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="fileName-${newEntryId}" class="form-label">Назва файла</label>
+                                    <input type="text" class="form-control" id="fileName-${newEntryId}" value="${newEntry.fileName}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="fileSize-${newEntryId}" class="form-label">Розмір файла</label>
+                                    <input type="text" class="form-control" id="fileSize-${newEntryId}" value="${newEntry.fileSize}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="downloadUrl-${newEntryId}" class="form-label">Силка для скачування</label>
+                                    <input type="text" class="form-control" id="downloadUrl-${newEntryId}" value="${newEntry.downloadUrl}">
+                                </div>
+                                <button class="btn btn-success save-btn">Зберегти</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                const editBtn = entryElement.querySelector('.edit-btn');
+                const saveBtn = entryElement.querySelector('.save-btn');
+                const deleteBtn = entryElement.querySelector('.delete-btn');
+                const collapsedContent = entryElement.querySelector('.collapsed-content');
+                const header = entryElement.querySelector('.script-entry-header');
+
+                if (currentEntries.length === 1) {
+                    collapsedContent.style.display = 'block'; // Перша колонка розгорнута за замовчуванням
+                    header.classList.add('visually-hidden'); // Приховуємо Назва файла, Розмір файла, Редагувати, Видалити
+                }
+
+                editBtn.addEventListener('click', () => {
+                    collapsedContent.style.display = collapsedContent.style.display === 'none' ? 'block' : 'none';
+                    header.classList.toggle('visually-hidden'); // Показуємо або приховуємо Назва файла, Розмір файла, Редагувати, Видалити
+                });
+
+                saveBtn.addEventListener('click', () => {
+                    newEntry.tiktok = document.getElementById(`tiktok-${newEntryId}`).value;
+                    newEntry.youtube = document.getElementById(`youtube-${newEntryId}`).value;
+                    newEntry.twitter = document.getElementById(`twitter-${newEntryId}`).value;
+                    newEntry.reddit = document.getElementById(`reddit-${newEntryId}`).value;
+                    newEntry.fileName = document.getElementById(`fileName-${newEntryId}`).value;
+                    newEntry.fileSize = document.getElementById(`fileSize-${newEntryId}`).value;
+                    newEntry.downloadUrl = document.getElementById(`downloadUrl-${newEntryId}`).value;
+
+                    entryElement.querySelector('.file-name').innerText = newEntry.fileName;
+                    entryElement.querySelector('.file-size').innerText = newEntry.fileSize;
+
+                    // Після збереження приховуємо контент та показуємо заголовок
+                    collapsedContent.style.display = 'none';
+                    header.classList.remove('visually-hidden');
+
+                    updateResult();
+                });
+
+                deleteBtn.addEventListener('click', () => {
+                    const index = currentEntries.indexOf(newEntry);
+                    currentEntries.splice(index, 1);
+                    entryElement.remove();
+                    updateResult();
+                });
+
+                scriptGenerator.appendChild(entryElement);
+
+                // Згортання попередніх колонок
+                collapseAllEntries();
+                collapsedContent.style.display = 'block'; // Показуємо нову колонку
+                header.classList.add('visually-hidden'); // Приховуємо заголовок
+
+                updateResult();
+            }
+
+            // Додавання нової колонки
+            addBtn.addEventListener('click', addNewEntry);
+
+            // Ініціалізація першої колонки
+            addNewEntry();
+        });
+    </script>
+</body>
+</html>
