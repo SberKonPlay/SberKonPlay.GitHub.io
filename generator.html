@@ -36,25 +36,46 @@
         </div>
     </div>
 
+    <!-- Модальне вікно для видалення -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">Підтвердження видалення</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Ви впевнені, що хочете видалити цей запис?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
+            <button type="button" class="btn btn-danger confirm-delete">Видалити</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const scriptGenerator = document.getElementById('script-generator');
             const result = document.getElementById('result');
             const addBtn = document.querySelector('.add-btn');
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
             let currentEntries = [];
+            let entryToDelete = null;
+            let entryToDeleteIndex = null;
 
             function updateResult() {
-                let resultObject = currentEntries.reduce((acc, entry) => {
-                    acc.push({
-                        tiktok: entry.tiktok,
-                        youtube: entry.youtube,
-                        twitter: entry.twitter,
-                        reddit: entry.reddit,
-                        download_url: entry.downloadUrl
-                    });
-                    return acc;
-                }, []);
+                let resultObject = currentEntries.map(entry => ({
+                    tiktok: entry.tiktok,
+                    youtube: entry.youtube,
+                    twitter: entry.twitter,
+                    reddit: entry.reddit,
+                    download_url: entry.downloadUrl,
+                    file_name: entry.fileName,
+                    file_size: entry.fileSize
+                }));
                 result.value = JSON.stringify(resultObject, null, 4);
             }
 
@@ -62,7 +83,32 @@
                 const allEntries = document.querySelectorAll('.script-entry .collapsed-content');
                 allEntries.forEach(entry => {
                     entry.style.display = 'none';
+                    entry.closest('.script-entry').querySelector('.script-entry-header').classList.remove('visually-hidden');
                 });
+            }
+
+            function savePreviousEntry(index) {
+                if (index >= 0 && currentEntries[index]) {
+                    const entryElement = document.querySelectorAll('.script-entry')[index];
+                    const collapsedContent = entryElement.querySelector('.collapsed-content');
+                    const header = entryElement.querySelector('.script-entry-header');
+
+                    const newEntryId = `entry-${index}`;
+
+                    currentEntries[index].tiktok = document.getElementById(`tiktok-${newEntryId}`).value;
+                    currentEntries[index].youtube = document.getElementById(`youtube-${newEntryId}`).value;
+                    currentEntries[index].twitter = document.getElementById(`twitter-${newEntryId}`).value;
+                    currentEntries[index].reddit = document.getElementById(`reddit-${newEntryId}`).value;
+                    currentEntries[index].fileName = document.getElementById(`fileName-${newEntryId}`).value;
+                    currentEntries[index].fileSize = document.getElementById(`fileSize-${newEntryId}`).value;
+                    currentEntries[index].downloadUrl = document.getElementById(`downloadUrl-${newEntryId}`).value;
+
+                    entryElement.querySelector('.file-name').textContent = currentEntries[index].fileName || 'Назва файла';
+                    entryElement.querySelector('.file-size').textContent = currentEntries[index].fileSize || 'Розмір файла';
+
+                    collapsedContent.style.display = 'none'; // Згортаємо після збереження
+                    header.classList.remove('visually-hidden'); // Показуємо Назва файла, Розмір файла, Редагувати, Видалити
+                }
             }
 
             function addNewEntry(data = {}) {
@@ -133,14 +179,14 @@
                 const collapsedContent = entryElement.querySelector('.collapsed-content');
                 const header = entryElement.querySelector('.script-entry-header');
 
-                if (currentEntries.length === 1) {
-                    collapsedContent.style.display = 'block'; // Перша колонка розгорнута за замовчуванням
-                    header.classList.add('visually-hidden'); // Приховуємо Назва файла, Розмір файла, Редагувати, Видалити
-                }
+                // Викликаємо функцію редагування для нової колонки автоматично
+                collapsedContent.style.display = 'block';
+                header.classList.add('visually-hidden');
 
                 editBtn.addEventListener('click', () => {
-                    collapsedContent.style.display = collapsedContent.style.display === 'none' ? 'block' : 'none';
-                    header.classList.toggle('visually-hidden'); // Показуємо або приховуємо Назва файла, Розмір файла, Редагувати, Видалити
+                    collapseAllEntries();
+                    collapsedContent.style.display = 'block';
+                    header.classList.add('visually-hidden');
                 });
 
                 saveBtn.addEventListener('click', () => {
@@ -152,37 +198,43 @@
                     newEntry.fileSize = document.getElementById(`fileSize-${newEntryId}`).value;
                     newEntry.downloadUrl = document.getElementById(`downloadUrl-${newEntryId}`).value;
 
-                    entryElement.querySelector('.file-name').innerText = newEntry.fileName;
-                    entryElement.querySelector('.file-size').innerText = newEntry.fileSize;
+                    entryElement.querySelector('.file-name').textContent = newEntry.fileName || 'Назва файла';
+                    entryElement.querySelector('.file-size').textContent = newEntry.fileSize || 'Розмір файла';
 
-                    // Після збереження приховуємо контент та показуємо заголовок
-                    collapsedContent.style.display = 'none';
-                    header.classList.remove('visually-hidden');
+                    collapsedContent.style.display = 'none'; // Згортаємо після збереження
+                    header.classList.remove('visually-hidden'); // Показуємо Назва файла, Розмір файла, Редагувати, Видалити
 
                     updateResult();
                 });
 
                 deleteBtn.addEventListener('click', () => {
-                    const index = currentEntries.indexOf(newEntry);
-                    currentEntries.splice(index, 1);
-                    entryElement.remove();
-                    updateResult();
+                    entryToDelete = entryElement;
+                    entryToDeleteIndex = currentEntries.indexOf(newEntry); // Зберігаємо індекс для видалення
+                    deleteModal.show(); // Відображаємо модальне вікно для підтвердження видалення
                 });
 
                 scriptGenerator.appendChild(entryElement);
-
-                // Згортання попередніх колонок
-                collapseAllEntries();
-                collapsedContent.style.display = 'block'; // Показуємо нову колонку
-                header.classList.add('visually-hidden'); // Приховуємо заголовок
-
                 updateResult();
             }
 
-            // Додавання нової колонки
-            addBtn.addEventListener('click', addNewEntry);
+            // Обробка підтвердження видалення через модальне вікно
+            document.querySelector('.confirm-delete').addEventListener('click', () => {
+                if (entryToDelete) {
+                    entryToDelete.remove();
+                    currentEntries.splice(entryToDeleteIndex, 1); // Видаляємо запис з масиву
+                    updateResult();
+                    deleteModal.hide();
+                }
+            });
 
-            // Ініціалізація першої колонки
+            // Додавання нової колонки по кнопці
+            addBtn.addEventListener('click', () => {
+                collapseAllEntries();
+                savePreviousEntry(currentEntries.length - 1); // Зберігаємо попередню колонку перед створенням нової
+                addNewEntry(); // Додаємо новий запис із полями
+            });
+
+            // Додаємо перший запис відразу
             addNewEntry();
         });
     </script>
