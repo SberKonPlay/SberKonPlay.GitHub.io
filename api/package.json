@@ -1,6 +1,11 @@
 {
+  "name": "content-fetch",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "vercel dev"
+  },
   "dependencies": {
-    "express": "^4.17.1",
-    "axios": "^0.21.1"
+    "node-fetch": "^2.6.7"
   }
 }
