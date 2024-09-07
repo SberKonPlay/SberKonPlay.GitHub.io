@@ -8,22 +8,31 @@ export default async function handler(req, res) {
     }
 
     try {
-        // Перший запит на отримання файлу
+        // Перший запит на отримання сторінки або файла
         let response = await fetch(url, {
             method: 'GET',
             redirect: 'manual',
         });
 
-        // Якщо Google потребує підтвердження завантаження (коли файл великий)
-        if (response.status === 302 && response.headers.get('location').includes('confirm')) {
-            // Отримуємо підтверджуючу URL
+        // Якщо Google Drive запитує підтвердження
+        if (response.status === 302) {
             const confirmUrl = response.headers.get('location');
-            
-            // Підтверджуємо завантаження
-            response = await fetch(confirmUrl, { method: 'GET' });
+
+            // Шукаємо параметр підтвердження (наприклад, confirm=t)
+            const confirmationMatch = confirmUrl.match(/confirm=([0-9A-Za-z-_]+)/);
+
+            if (confirmationMatch) {
+                const confirmToken = confirmationMatch[1];
+                const directDownloadUrl = `${url}&confirm=${confirmToken}`;
+
+                // Виконуємо запит на підтверджене завантаження файлу
+                response = await fetch(directDownloadUrl, { method: 'GET' });
+            } else {
+                return res.status(500).json({ error: 'Confirmation token not found' });
+            }
         }
 
-        // Якщо статус не OK після підтвердження
+        // Якщо після підтвердження ми все ще не можемо отримати файл
         if (!response.ok) {
             return res.status(500).json({ error: 'Failed to download the file after confirmation' });
         }
@@ -33,7 +42,7 @@ export default async function handler(req, res) {
         const fileNameMatch = contentDisposition && contentDisposition.match(/filename="(.+)"/);
         const fileName = fileNameMatch ? fileNameMatch[1] : 'downloaded-file';
 
-        // Надсилаємо файл користувачеві
+        // Надсилаємо файл у відповідь
         res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
         res.setHeader('Content-Type', 'application/octet-stream');
         
