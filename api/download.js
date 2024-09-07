@@ -8,33 +8,36 @@ export default async function handler(req, res) {
     }
 
     try {
-        // Перший запит для отримання файлу або сторінки підтвердження
+        // Перший запит на отримання файлу
         let response = await fetch(url, {
             method: 'GET',
             redirect: 'manual',
         });
 
-        // Якщо Google Drive потребує підтвердження
+        // Якщо Google потребує підтвердження завантаження (коли файл великий)
         if (response.status === 302 && response.headers.get('location').includes('confirm')) {
+            // Отримуємо підтверджуючу URL
             const confirmUrl = response.headers.get('location');
             
-            // Виконуємо підтвердження завантаження файлу
+            // Підтверджуємо завантаження
             response = await fetch(confirmUrl, { method: 'GET' });
         }
 
-        // Якщо після цього ми отримали сторінку з підтвердженням (коли файл великий)
+        // Якщо статус не OK після підтвердження
         if (!response.ok) {
-            return res.status(500).json({ error: 'Failed to download the file' });
+            return res.status(500).json({ error: 'Failed to download the file after confirmation' });
         }
 
-        // Отримуємо оригінальну назву файлу з заголовків
+        // Витягуємо назву файлу з заголовка
         const contentDisposition = response.headers.get('content-disposition');
         const fileNameMatch = contentDisposition && contentDisposition.match(/filename="(.+)"/);
         const fileName = fileNameMatch ? fileNameMatch[1] : 'downloaded-file';
 
-        // Створюємо стрім і надсилаємо файл як відповідь
+        // Надсилаємо файл користувачеві
         res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
         res.setHeader('Content-Type', 'application/octet-stream');
+        
+        // Передаємо стрім у відповідь
         response.body.pipe(res);
     } catch (error) {
         console.error('Error downloading file:', error);
