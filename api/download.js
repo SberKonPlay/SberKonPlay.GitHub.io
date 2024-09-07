@@ -1,22 +1,33 @@
-const express = require('express');
-const axios = require('axios');
-const app = express();
+import fetch from 'node-fetch';
 
-app.get('/api/download', async (req, res) => {
-    const fileUrl = req.query.url;
-    if (!fileUrl) {
-        return res.status(400).send('URL is required');
+export default async function handler(req, res) {
+    const { url } = req.query;
+
+    if (!url) {
+        return res.status(400).json({ error: 'Missing URL parameter' });
     }
 
     try {
-        const response = await axios.get(fileUrl, { responseType: 'stream' });
-        response.data.pipe(res);
-    } catch (error) {
-        res.status(500).send('Error downloading file');
-    }
-});
+        // Завантаження файлу з Google Drive
+        let response = await fetch(url, {
+            method: 'GET',
+            redirect: 'manual',
+        });
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
+        // Перевірка чи є перенаправлення на підтвердження
+        if (response.status === 302 && response.headers.get('location').includes('confirm')) {
+            const confirmUrl = response.headers.get('location');
+            response = await fetch(confirmUrl, { method: 'GET' });
+        }
+
+        // Надсилаємо файл як відповідь
+        const fileStream = await response.body;
+
+        res.setHeader('Content-Disposition', 'attachment');
+        res.setHeader('Content-Type', 'application/octet-stream');
+        fileStream.pipe(res);
+    } catch (error) {
+        console.error('Error downloading file:', error);
+        res.status(500).json({ error: 'Failed to download the file' });
+    }
+}
