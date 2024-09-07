@@ -2,12 +2,14 @@ const express = require('express');
 const axios = require('axios');
 const app = express();
 
-app.get('/download', async (req, res) => {
-    const fileId = '1iPpNpQ8hrzGjOET_BnTsayY-9eZuMjF8';
-    const url = `https://drive.google.com/uc?export=download&id=${fileId}`;
+app.get('/api/download', async (req, res) => {
+    const fileUrl = req.query.url;
+    if (!fileUrl) {
+        return res.status(400).send('URL is required');
+    }
 
     try {
-        const response = await axios.get(url, { responseType: 'stream' });
+        const response = await axios.get(fileUrl, { responseType: 'stream' });
         response.data.pipe(res);
     } catch (error) {
         res.status(500).send('Error downloading file');
